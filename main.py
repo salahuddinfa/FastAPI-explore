@@ -1,6 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Query
 from enum import Enum
-from typing import Union
+from typing import Union,Annotated
 from pydantic import BaseModel
 
 
@@ -65,3 +65,11 @@ def create_product(product_id: int,product:Product,skip:int,limit:Union[int,None
     # result.update(**product_dict)
     # print(result)
     return result 
+
+@app.get("/elements/{element_id}/")
+def get_elements(element_id : int,q: Annotated[Union[list,None],Query()]=...):
+    result = {'elements':[{'id':1},{'id':2}]}
+    result['element_id'] = element_id
+    if q :
+        result.update({'q':q})
+    return result
